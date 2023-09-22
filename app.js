@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () =>{
             current = theTetrominoes[random][currentRotation];
             displayShape();
             addScore();
+            gameOver();
         }
     }
 
@@ -155,6 +156,14 @@ document.addEventListener('DOMContentLoaded', () =>{
                 squares = removedSquares.concat(squares);
                 squares.forEach(cell => grid.appendChild(cell));
             }
+        }
+    }
+    function gameOver() {
+        if (current.some(index => squares[index+currentPosition].classList.contains('taken'))) {
+            score = "Game Over";
+            scoreDisplay.innerHTML =score;
+            clearInterval(timerId);
+            timerId = null;
         }
     }
 })
