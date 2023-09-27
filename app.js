@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', () =>{
     const width = 10;
     const grid = document.querySelector('.grid');
     let squares = Array.from(document.querySelectorAll('.grid div'));
+    let borders = Array.from(document.querySelectorAll('#border'));
     const scoreDisplay = document.querySelector('#score');
     const startBtn = document.querySelector('#start-button');
     let timerId;
     let score = 0;
 
-    //The Tetrominoes
     const lTetromino = [
         [1, width+1, width*2+1, 2],
         [width, width+1, width+2, 2*width+2],
@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () =>{
         [width, width+1, width+2, width+3]
     ]
 
+    const colours = ["#0F6CF2", "#EB0045", "#B231F0", "#3DCA31", "#21CDFF"];
+
     const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
 
     let random = Math.floor(Math.random()*theTetrominoes.length);
@@ -54,13 +56,15 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     function draw() {
         current.forEach(index => {
-            squares[currentPosition + index].classList.add('tetromino')
+            squares[currentPosition + index].classList.add('tetromino');
+            squares[currentPosition + index].style.backgroundColor = colours[random];
         })
     }
 
     function undraw() {
         current.forEach(index => {
-            squares[currentPosition + index].classList.remove('tetromino')
+            squares[currentPosition + index].classList.remove('tetromino');
+            squares[currentPosition + index].style.backgroundColor = "";
         })
     }
 
@@ -120,24 +124,40 @@ document.addEventListener('DOMContentLoaded', () =>{
     let displayIndex = 0;
 
     const upNextTetrominoes = [
-        [1, displayWidth+1, displayWidth*2+1, 2],
-        [displayWidth+1, displayWidth+2, 2*displayWidth, 2*displayWidth+1],
-        [1, displayWidth, displayWidth+1, displayWidth+2],
-        [0, 1, displayWidth, displayWidth+1],
+        [displayWidth + 1, 2*displayWidth + 1, 3*displayWidth + 1, displayWidth + 2],
+        [2*displayWidth+1, 2*displayWidth + 2, displayWidth + 2, 3*displayWidth+1],
+        [2*displayWidth + 1, 3*displayWidth, 3*displayWidth + 1, 3*displayWidth + 2],
+        [3*displayWidth + 1, 3*displayWidth + 2, 2*displayWidth + 1, 2*displayWidth+2],
         [1, displayWidth+1, 2*displayWidth+1, 3*displayWidth+1]
     ];
 
     function displayShape() {
         displaySquares.forEach(square => square.classList.remove('tetromino'))
+        displaySquares.forEach(square => square.style.backgroundColor = '')
         upNextTetrominoes[nextRandom].forEach(index => displaySquares[index].classList.add('tetromino'));
+        upNextTetrominoes[nextRandom].forEach(index => displaySquares[index].style.backgroundColor = colours[nextRandom]);
     }
 
     startBtn.addEventListener('click', () => {
+        if (startBtn.innerHTML === "Start") {
+            squares.forEach(square => {
+                square.classList.remove('tetromino');
+                square.classList.remove('taken');
+                square.style.backgroundColor = "";
+            })
+
+            score = 0;
+            scoreDisplay.innerHTML = score;
+
+            borders.forEach(square => {square.classList.add('taken')});
+        }
         if (timerId) {
+            startBtn.innerHTML = "Resume";
             clearInterval(timerId);
             timerId = null;
         }
         else {
+            startBtn.innerHTML = "Pause";
             nextRandom = Math.floor(Math.random()*theTetrominoes.length);
             timerId = setInterval(moveDown, 1000);
             displayShape();
@@ -150,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () =>{
             if (row.every(index => squares[index].classList.contains('tetromino'))){
                 row.forEach(index => squares[index].classList.remove('taken'));
                 row.forEach(index => squares[index].classList.remove('tetromino'));
+                row.forEach(index => squares[index].style.backgroundColor = "");
                 score += 10;
                 scoreDisplay.innerHTML = score;
                 let removedSquares = squares.splice(i, width);
@@ -164,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () =>{
             scoreDisplay.innerHTML =score;
             clearInterval(timerId);
             timerId = null;
+            startBtn.innerHTML = "Start";
         }
     }
 })

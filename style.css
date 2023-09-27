@@ -1,14 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: radial-gradient(#142356, #020430);
+    color: #6999BC;
+}
+
 .grid {
     width: 200px;
     height: 400px;
-    background-color: yellow;
     display: flex;
     flex-wrap: wrap;
 }
 
 .grid div {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
+    margin: 1px;
 }
 
 .tetromino {
@@ -17,18 +26,59 @@
 
 .mini-grid {
     margin-left: 50px;
-    width : 80px;
-    height: 80px;
-    background-color: yellow;
+    width : 86px;
+    height: 86px;
     display: flex;
     flex-wrap: wrap;
+    border: 3px #6999BC solid;
 }
 
 .mini-grid div {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
+    margin: 1px;
 }
 
 .container {
     display: flex;
+    width: 342px;
+    margin: auto;
+    align-items: center;
+}
+
+#border {
+    width: 20px;
+    height: 20px;
+    margin: 0px;
+    margin-top: 1px;
+    border-top: 4px #6999BC solid;
+}
+
+h3 {
+    display: inline;
+    margin-top: 40px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.centering {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#start-button {
+    padding: 7px;
+    border-radius: 4px;
+    border: transparent;
+    background-color: #6999BC;
+}
+
+#start-button:hover{
+    background-color: skyblue;
 }
